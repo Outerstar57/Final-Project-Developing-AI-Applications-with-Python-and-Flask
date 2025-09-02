@@ -1,3 +1,6 @@
+"""
+This file purpose is to handle the Flask app
+"""
 # Libraries
 from flask import Flask, request, render_template
 from EmotionDetection.emotion_detection import emotion_detector
@@ -17,8 +20,8 @@ def send_text():
     # Check the response of the function
     if response["dominant_emotion"] is None:
         return "Invalid text! Please try again!"
-    else:
-        return f"""For the given statement, the system response is
+    # Else
+    return f"""For the given statement, the system response is
     'anger': {response["anger"]},
     'disgust': {response["disgust"]},
     'fear': {response["fear"]},
