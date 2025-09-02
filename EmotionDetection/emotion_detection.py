@@ -17,12 +17,21 @@ def emotion_detector(text_to_analyse):
     myobj =  { "raw_document": { "text": text_to_analyse } }
     # Send post to watson
     response = requests.post(url, json=myobj, headers=header)
-    # Access the response text in json
-    json_text = json.loads(response.text)
-    # Emotion extractor
-    emotions = json_text["emotionPredictions"][0]["emotion"]
-    # Dominant emotion finder
-    dominant_emotion = max(emotions.items(), key = lambda emotions: emotions[1])
-    # Join the dictionaries
-    emotions["dominant_emotion"] = dominant_emotion[0]
-    return emotions
+    # Check status_code
+    if response.status_code == 400:
+        return {"anger":None,
+        "joy":None,
+        "disgust":None,
+        "fear":None,
+        "sadness":None,
+        "dominant_emotion":None}
+    else:
+        # Access the response text in json
+        json_text = json.loads(response.text)
+        # Emotion extractor
+        emotions = json_text["emotionPredictions"][0]["emotion"]
+        # Dominant emotion finder
+        dominant_emotion = max(emotions.items(), key = lambda emotions: emotions[1])
+        # Join the dictionaries
+        emotions["dominant_emotion"] = dominant_emotion[0]
+        return emotions
